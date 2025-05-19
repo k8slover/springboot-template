@@ -1,0 +1,25 @@
+app_name: springboot-template
+image:
+  repository: <your-ecr-repo-url>/springboot-template
+  tag: latest
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: prod
+probes:
+  liveness:
+    path: /actuator/health
+    port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readiness:
+    path: /actuator/health
+    port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 5

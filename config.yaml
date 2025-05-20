@@ -1,0 +1,5 @@
+# config.yaml
+enable_tests: true
+deploy_to_staging: true
+require_approval: true
+

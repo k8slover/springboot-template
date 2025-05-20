@@ -1,0 +1,10 @@
+**/target
+**/.mvn
+**/.idea
+**/node_modules
+*.log
+.git
+.dockerignore
+Dockerfile
+README.md
+

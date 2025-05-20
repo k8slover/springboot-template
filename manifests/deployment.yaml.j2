@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ app_name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ app_name }}
+  template:
+    metadata:
+      labels:
+        app: {{ app_name }}
+    spec:
+      containers:
+        - name: {{ app_name }}
+          image: {{ image.repository }}:{{ image.tag }}
+          resources:
+            requests:
+              memory: {{ resources.requests.memory }}
+              cpu: {{ resources.requests.cpu }}
+            limits:
+              memory: {{ resources.limits.memory }}
+              cpu: {{ resources.limits.cpu }}
+          env:
+          {% for var in env %}
+            - name: {{ var.name }}
+              value: "{{ var.value }}"
+          {% endfor %}
+          livenessProbe:
+            httpGet:
+              path: {{ probes.liveness.path }}
+              port: {{ probes.liveness.port }}
+            initialDelaySeconds: {{ probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ probes.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ probes.readiness.path }}
+              port: {{ probes.readiness.port }}
+            initialDelaySeconds: {{ probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ probes.readiness.periodSeconds }}
